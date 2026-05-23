@@ -277,7 +277,7 @@ http://localhost:8080/home
 
 #  Author
 
-Developed as an academic project in Software Engineering.
+By Bakhta Nairouz Ben Hadj Slama
 
 Spring Boot • JPA • Thymeleaf • DTO • Streams
 
