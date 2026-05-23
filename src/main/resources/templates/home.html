@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>Car Rental Management</title>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+
+        :root{
+            --thistle:#c4b7cb;
+            --pale-slate:#bbc7ce;
+            --frozen-water:#bfedef;
+            --pearl-aqua:#98e2c6;
+            --ebony:#545c52;
+        }
+
+        body{
+            background-color:var(--frozen-water);
+        }
+
+        .header-box{
+            background-color:var(--ebony);
+            color:white;
+            padding:20px;
+            border-radius:15px;
+            margin-top:20px;
+            margin-bottom:30px;
+        }
+
+        .car-img{
+            width:100%;
+            height:200px;
+            object-fit:cover;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header-box">
+        <h1>Car Rental Management</h1>
+        <p>By Bakhta Nairouz</p>
+    </div>
+    <div class="row mb-4">
+
+        <div class="col-md-4">
+            <div class="card p-3 shadow-sm">
+                <h5>Total Cars</h5>
+                <h3 th:text="${stats.totalCars}"></h3>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-3 shadow-sm">
+                <h5>Total Value</h5>
+                <h3 th:text="${stats.totalValue}"></h3>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card p-3 shadow-sm">
+                <h5>Available Cars</h5>
+                <h3 th:text="${stats.availableCars}"></h3>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SEARCH + ADD -->
+    <form method="get" th:action="@{/home}">
+        <div class="row mb-4">
+
+            <div class="col-md-4">
+                <input type="text"
+                       name="mc"
+                       class="form-control"
+                       placeholder="Search car..."
+                       th:value="${mc}">
+            </div>
+
+            <div class="col-md-2">
+                <button class="btn btn-dark">Search</button>
+            </div>
+
+            <div class="col-md-3">
+                <a th:href="@{/add}" class="btn btn-success">Add Car</a>
+            </div>
+
+        </div>
+    </form>
+
+    <!-- CARDS -->
+    <div class="row">
+
+        <div class="col-md-4 mb-4" th:each="c : ${data}">
+
+            <div class="card shadow-sm h-100">
+
+                <!-- IMAGE -->
+                <img th:if="${c.image != null and c.image != ''}"
+                     th:src="@{|/uploads/${c.image}|}"
+                     class="card-img-top car-img"
+                     alt="car image">
+
+                <!-- BODY -->
+                <div class="card-body">
+
+                    <h5 class="card-title" th:text="${c.model}"></h5>
+
+                    <p class="card-text">
+                        <strong>Price/Day:</strong>
+                        <span th:text="${c.pricePerDay}"></span> $
+                    </p>
+
+                    <p class="card-text">
+                        <strong>Available:</strong>
+                        <span th:text="${c.available}"></span>
+                    </p>
+
+                </div>
+
+                <!-- FOOTER -->
+                <div class="card-footer d-flex justify-content-between">
+
+                    <a th:href="@{/edit/{id}(id=${c.id})}"
+                       class="btn btn-warning btn-sm">
+                        <i class="fa fa-edit"></i>
+                    </a>
+
+                    <a th:href="@{/delete/{id}(id=${c.id})}"
+                       class="btn btn-danger btn-sm">
+                        <i class="fa fa-trash"></i>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="mt-4 text-center">
+
+    <span th:each="i : ${pages}">
+
+       <a th:href="@{/home(page=${i}, mc=${mc})}"
+          th:text="${i}"
+          class="btn btn-outline-dark m-1"
+          th:classappend="${i == currentPage} ? 'active' : ''">
+</a>
+
+    </span>
+
+        </div>
+
+</div>
+
+</body>
+</html>
